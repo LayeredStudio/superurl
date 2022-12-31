@@ -1,6 +1,6 @@
 {
   "name": "@layered/superurl",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Validate, sanitize & extract info from URLs",
   "main": "dist/index.js",
   "scripts": {
