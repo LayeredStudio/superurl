@@ -21,8 +21,8 @@ Use `sanitizeUrl(url)` to clean URLs, and `urlInfo(url)` to extract data
 ```js
 const { sanitizeUrl } = require('@layered/superurl')
 
-const cleanUrl = sanitizeUrl('http://example.com/path?utc_campaign=upgrade')
-// returns https://example.com/path
+const cleanUrl = sanitizeUrl('example.com/path?utc_campaign=upgrade')
+// returns http://example.com/path
 ```
 
 ## APIs
