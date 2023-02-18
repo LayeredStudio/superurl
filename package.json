@@ -1,6 +1,6 @@
 {
   "name": "@layered/superurl",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Validate, sanitize & extract info from URLs",
   "author": "Andrei",
   "homepage": "https://github.com/LayeredStudio/superurl#readme",
