@@ -1,7 +1,6 @@
 const { getDomain, parse } = require('tldts')
 
 interface SanitizeUrlOptions {
-	returns?: 'URL' | 'string';
 	allowedProtocols?: string[];
 }
 
@@ -13,11 +12,11 @@ const hostnameRewrites: {[key: string]: string} = {
 	'mobile.twitter.com': 'twitter.com',
 }
 
-const secureDomains: string[] = ['google.com', 'twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'youtube.com', 'linkedin.com', 'whatsapp.com', 'tumblr.com']
+const secureDomains: string[] = ['example.com', 'google.com', 'twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'youtube.com', 'linkedin.com', 'whatsapp.com', 'tumblr.com']
 //todo use HSTS https://www.chromium.org/hsts/
 //https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json
 
-const trackingParams = ['utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'fbclid', 'ref', 'ref_src', 'ref_url', 'referer', 'ref_', 'fref', 'usp', 'trk', 'originalSubdomain', 'original_referer', 'share_app_id', 'share_author_id', 'share_link_id']
+const trackingParams = ['_ga', 'utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'fbclid', 'ref', 'ref_src', 'ref_url', 'referer', 'ref_', 'fref', 'pnref', 'usp', 'trk', 'originalSubdomain', 'original_referer', 'share_app_id', 'share_author_id', 'share_link_id', 'share_id', 'sid']
 const languageParams = ['locale', 'language', 'lang', 'Lang', 'hl']
 const domainParams: { [key: string]: string[] } = {
 	'instagram.com': ['igshid'],
@@ -43,7 +42,6 @@ const ensureURL = (url: URL | string): URL => {
 
 const sanitizeUrl = (url: URL | string, options?: SanitizeUrlOptions): string => {
 	const opts = {
-		returns: 'string',
 		allowedProtocols: ['http:', 'https:'],
 		...options,
 	}

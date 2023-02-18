@@ -14,15 +14,11 @@
 ```npm i @layered/superurl```
 
 #### Usage
-The library has a simple API.
-Use `sanitizeUrl(url)` to clean URLs, and `urlInfo(url)` to extract data
-
-#### Example
 ```js
 const { sanitizeUrl } = require('@layered/superurl')
 
 const cleanUrl = sanitizeUrl('example.com/path?utc_campaign=upgrade')
-// returns http://example.com/path
+// returns https://example.com/path
 ```
 
 ## APIs
