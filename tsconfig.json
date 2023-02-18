@@ -5,8 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "types": ["node", "mocha"],
-    "lib": ["ES6"],
-    "target": "ES6",
+    "lib": ["es2020"],
+    "target": "es2020",
     "outDir": "./dist",
   },
   "files": ["./src/index.ts"]

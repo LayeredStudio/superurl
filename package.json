@@ -1,29 +1,30 @@
 {
   "name": "@layered/superurl",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Validate, sanitize & extract info from URLs",
-  "main": "dist/index.js",
+  "author": "Andrei",
+  "homepage": "https://github.com/LayeredStudio/superurl#readme",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LayeredStudio/superurl.git"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "start": "ts-node ./src/index.ts",
     "build": "tsc",
     "test": "mocha"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LayeredStudio/superurl.git"
-  },
+  "files": [
+    "dist"
+  ],
   "keywords": [
     "url",
     "validation",
     "extract",
     "sanitize"
   ],
-  "author": "Andrei",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LayeredStudio/superurl/issues"
-  },
-  "homepage": "https://github.com/LayeredStudio/superurl#readme",
   "devDependencies": {
     "@types/mocha": "^10.0.1",
     "@types/node": "^18.11.13",
