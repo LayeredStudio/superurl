@@ -16,8 +16,31 @@ const secureDomains: string[] = ['example.com', 'google.com', 'twitter.com', 'fa
 //todo use HSTS https://www.chromium.org/hsts/
 //https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json
 
-const trackingParams = ['_ga', 'utm_campaign', 'utm_content', 'utm_medium', 'utm_source', 'fbclid', 'ref', 'ref_src', 'ref_url', 'referer', 'ref_', 'fref', 'pnref', 'usp', 'trk', 'originalSubdomain', 'original_referer', 'share_app_id', 'share_author_id', 'share_link_id', 'share_id', 'sid']
 const languageParams = ['locale', 'language', 'lang', 'Lang', 'hl']
+const trackingParams = [
+	'_ga',
+	'fbclid',	// from Meta
+	'ref',
+	'ref_src',
+	'ref_url',
+	'referer',
+	'ref_',
+	'fref',
+	'pnref',
+	'originalSubdomain',	// from LinkedIn
+	'original_referer',
+	'share_app_id',
+	'share_author_id',
+	'share_link_id',
+	'share_id',	// from Snapchat
+	'sid',	// from Snapchat
+	'utm_campaign',
+	'utm_content',
+	'utm_medium',
+	'utm_source',
+	'usp',
+	'trk',
+]
 const domainParams: { [key: string]: string[] } = {
 	'instagram.com': ['igshid'],
 	'twitter.com': ['s', 't'],
@@ -64,26 +87,21 @@ const sanitizeUrl = (url: URL | string, options?: SanitizeUrlOptions): string =>
 	}
 
 	// remove common prefixes (www., mobile.) for easier parsing
-	let noWwwHostname = toURL.hostname.replace(/^(www\.)/, '').replace(/^(mobile\.)/, '').replace(/^(m\.)/, '')
+	let cleanHostname = toURL.hostname.replace(/^(www\.)/, '').replace(/^(mobile\.)/, '').replace(/^(m\.)/, '')
 
 	// upgrade domain protocol
-	if (toURL.protocol === 'http:' && secureDomains.includes(noWwwHostname)) {
+	if (toURL.protocol === 'http:' && secureDomains.includes(cleanHostname)) {
 		toURL.protocol = 'https:'
 	}
 
-	// remove tracking params
-	trackingParams.forEach(param => {
-		toURL.searchParams.delete(param)
-	})
-
-	// remove language params
-	languageParams.forEach(param => {
+	// remove tracking && language params
+	[...trackingParams, ...languageParams].forEach(param => {
 		toURL.searchParams.delete(param)
 	})
 
 	// remove domain-specific params
-	if (noWwwHostname in domainParams) {
-		domainParams[noWwwHostname].forEach(param => {
+	if (cleanHostname in domainParams) {
+		domainParams[cleanHostname].forEach(param => {
 			toURL.searchParams.delete(param)
 		})
 	}
