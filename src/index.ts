@@ -4,6 +4,17 @@ interface SanitizeUrlOptions {
 	allowedProtocols?: string[];
 }
 
+interface UrlInfoData {
+	originalUrl: URL | string;
+	url: string;
+	hostname: string;
+	domain: string;
+	subdomain?: string;
+	group: string | null;
+	handle: string | null;
+	providerId: string | null;
+}
+
 const hostnameRewrites: {[key: string]: string} = {
 	'instagram.com': 'www.instagram.com',
 	'facebook.com': 'www.facebook.com',
@@ -109,16 +120,16 @@ const sanitizeUrl = (url: URL | string, options?: SanitizeUrlOptions): string =>
 	return toURL.toString()
 }
 
-const urlInfo = (url: URL | string): any => {
-	const sanitized = sanitizeUrl(url)
+const urlInfo = (url: URL | string): UrlInfoData => {
 	const originalUrl = url
+	const sanitized = sanitizeUrl(url)
 	url = new URL(sanitized)
 
 	// validate domain
 	const parsedDomain = parse(url.hostname)
 
 	// remove common prefixes (www., mobile.) for easier parsing
-	let noWwwHostname = url.hostname.replace(/^(www\.)/, '').replace(/^(mobile\.)/, '').replace(/^(m\.)/, '')
+	let cleanHostname = url.hostname.replace(/^(www\.)/, '').replace(/^(mobile\.)/, '').replace(/^(m\.)/, '')
 
 	return {
 		originalUrl,
