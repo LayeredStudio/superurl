@@ -1,21 +1,6 @@
-const { getDomain, parse } = require('tldts')
+import { getDomain, parse as parseDomain } from 'tldts'
 
-interface SanitizeUrlOptions {
-	allowedProtocols?: string[];
-}
-
-interface UrlInfoData {
-	originalUrl: URL | string;
-	url: string;
-	hostname: string;
-	domain: string;
-	subdomain?: string;
-	group: string | null;
-	handle: string | null;
-	providerId: string | null;
-}
-
-const hostnameRewrites: {[key: string]: string} = {
+const hostnameRewrites = {
 	'instagram.com': 'www.instagram.com',
 	'facebook.com': 'www.facebook.com',
 	'm.facebook.com': 'www.facebook.com',
@@ -23,7 +8,7 @@ const hostnameRewrites: {[key: string]: string} = {
 	'mobile.twitter.com': 'twitter.com',
 }
 
-const secureDomains: string[] = ['example.com', 'google.com', 'twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'youtube.com', 'linkedin.com', 'whatsapp.com', 'tumblr.com']
+const secureDomains = ['example.com', 'google.com', 'twitter.com', 'facebook.com', 'instagram.com', 'tiktok.com', 'youtube.com', 'linkedin.com', 'whatsapp.com', 'tumblr.com']
 //todo use HSTS https://www.chromium.org/hsts/
 //https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json
 
@@ -51,14 +36,23 @@ const trackingParams = [
 	'utm_source',
 	'usp',
 	'trk',
+	'si',	// from Spotify
+	'nd',	// from Spotify
 ]
-const domainParams: { [key: string]: string[] } = {
+const domainParams = {
 	'instagram.com': ['igshid'],
 	'twitter.com': ['s', 't'],
 	'tiktok.com': ['_d', '_r', '_t', 'checksum', 'sec_uid', 'sec_user_id', 'tt_from', 'u_code', 'user_id'],
 }
 
-const ensureURL = (url: URL | string): URL => {
+const handleRegexByHostname = {
+	'github.com': /^[a-z0-9-]{2,}$/i,
+	'twitter.com': /^@?(\w){1,15}$/,
+	'instagram.com': /^([\w\.]){2,30}$/,
+	'pinterest.com': /^[a-z0-9_]{1,15}$/i,
+}
+
+const ensureURL = (url) => {
 	if (typeof url === 'string') {
 		try {
 			url = new URL(url)
@@ -74,7 +68,7 @@ const ensureURL = (url: URL | string): URL => {
 	return url
 }
 
-const sanitizeUrl = (url: URL | string, options?: SanitizeUrlOptions): string => {
+const sanitizeUrl = (url, options) => {
 	const opts = {
 		allowedProtocols: ['http:', 'https:'],
 		...options,
@@ -86,7 +80,7 @@ const sanitizeUrl = (url: URL | string, options?: SanitizeUrlOptions): string =>
 	}
 
 	// validate domain
-	const parsedDomain = parse(toURL.hostname)
+	const parsedDomain = parseDomain(toURL.hostname)
 
 	if (!parsedDomain.domain || !parsedDomain.isIcann) {
 		throw new Error(`Not a valid internet domain "${toURL.hostname}"`)
@@ -120,16 +114,47 @@ const sanitizeUrl = (url: URL | string, options?: SanitizeUrlOptions): string =>
 	return toURL.toString()
 }
 
-const urlInfo = (url: URL | string): UrlInfoData => {
+const urlInfo = (url) => {
 	const originalUrl = url
 	const sanitized = sanitizeUrl(url)
 	url = new URL(sanitized)
 
+	let handle = null
+	let providerId = null
+
 	// validate domain
-	const parsedDomain = parse(url.hostname)
+	const parsedDomain = parseDomain(url.hostname)
 
 	// remove common prefixes (www., mobile.) for easier parsing
 	let cleanHostname = url.hostname.replace(/^(www\.)/, '').replace(/^(mobile\.)/, '').replace(/^(m\.)/, '')
+
+	// individual paths
+	const paths = url.pathname.split('/').filter(Boolean)
+
+	if (paths.length) {
+
+		// handle as first url path
+		if (['twitter.com', 'pinterest.com', 'github.com', 'instagram.com'].includes(parsedDomain.domain)) {
+			if (handleRegexByHostname[parsedDomain.domain].test(paths[0])) {
+				handle = paths[0]
+			}
+		} else if (parsedDomain.domain === 'linkedin.com' && paths.length > 1 && paths[0] === 'in' && !paths[1].includes('-')) {
+			handle = paths[1]
+		} else if (parsedDomain.domain === 'facebook.com') {
+			if (paths[0] === 'profile.php') {
+				providerId = url.searchParams.get('id')
+			} else if (paths[0] === 'pages' && paths[1]) {
+				handle = paths[1]
+			} else {
+				handle = paths[0]
+			}
+
+			if (handle && /^[a-z0-9.]+$/i.test(handle)) {
+			} else {
+				handle = null
+			}
+		}
+	}
 
 	return {
 		originalUrl,
@@ -137,13 +162,12 @@ const urlInfo = (url: URL | string): UrlInfoData => {
 		hostname: url.hostname,
 		domain: parsedDomain.domain,
 		subdomain: parsedDomain.subdomain,
-		group: '',
-		handle: null,
-		providerId: null,
+		handle,
+		providerId,
 	}
 }
 
-module.exports = {
+export {
 	sanitizeUrl,
 	urlInfo,
 }

@@ -1,6 +1,6 @@
-const assert = require('assert')
+import assert from 'assert'
 
-const { sanitizeUrl } = require('../src/index.ts')
+import { sanitizeUrl } from '../src/index.js'
 
 describe('sanitizeUrl()', function () {
 	it('no url', function () {
@@ -48,6 +48,7 @@ describe('sanitizeUrl()', function () {
 		assert.equal(sanitizeUrl('https://www.sorryapp.com/powered-by?utm_medium=statusfooter&utm_source=ea5d5bbc.sorryapp.com'), 'https://www.sorryapp.com/powered-by');
 		assert.equal(sanitizeUrl('https://www.going.com/blog/introducing-going?_ga=2.69242896.1293422072.1673460812-1097120473.1673460812'), 'https://www.going.com/blog/introducing-going');
 		assert.equal(sanitizeUrl('https://www.snapchat.com/add/nyc?share_id=QzVCQkJDNUUtQzgzNS00NjRCLTlEQzQtNTRDRTNDMTE2QzFD&locale=en_US&sid=7eb444d1a6b94949b5a2215b1ef0d459&utm_medium=social&utm_source=hoobe'), 'https://www.snapchat.com/add/nyc');
+		assert.equal(sanitizeUrl('https://open.spotify.com/user/31nc3nalswo2n4zo2x4hcra4w2oe?si=sOPwLS9ITfG135t-NJYuxg&nd=1'), 'https://open.spotify.com/user/31nc3nalswo2n4zo2x4hcra4w2oe');
 	});
 
 	it('remove language params', function () {
@@ -67,6 +68,7 @@ describe('sanitizeUrl()', function () {
 
 	it('remove TikTok tracking params', function () {
 		assert.equal(sanitizeUrl('https://www.tiktok.com/@tiktok?_t=8WEXSJjCgJp&_r=1'), 'https://www.tiktok.com/@tiktok');
+		assert.equal(sanitizeUrl('https://www.tiktok.com/@dumitra961?_t=8ZjpTKn57iP&_r=1'), 'https://www.tiktok.com/@dumitra961');
 		assert.equal(sanitizeUrl('https://www.tiktok.com/@tiktok?_d=secCgwIARCbDRjEFSADKAESPgo8dEq2Wni2E6WvJCanRSEzDDF0Qb3RpJoNdteKw%2FyQFEAOVm9Yeguo6SYmk56ER3KJdz%2FcPjxv3OhCauTjGgA%3D&checksum=6247ea4bffa090bbeafdcd95a1ee71f98b3dec4aa4480a8e4cad6b3479e8048b&language=he&sec_uid=MS4wLjABAAAAMVSsV5si5Q3TE-hoefIkSB4SfGiP7efmbW_sleWrFoQ4aNpdKNTVun1VeiEJvXWz&sec_user_id=MS4wLjABAAAAMVSsV5si5Q3TE-hoefIkSB4SfGiP7efmbW_sleWrFoQ4aNpdKNTVun1VeiEJvXWz&share_app_id=1233&share_author_id=6756995973303993349&share_link_id=BFA12B73-0A6C-4CAC-9A99-B7B5E513FAFF&tt_from=copy&u_code=d97f07a06fdd47&user_id=6756995973303993349&utm_campaign=client_share&utm_medium=ios&utm_source=copy&_r=1'), 'https://www.tiktok.com/@tiktok');
 	});
 });
