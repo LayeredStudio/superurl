@@ -34,6 +34,7 @@ const trackingParams = [
 	'utm_content',
 	'utm_medium',
 	'utm_source',
+	'utm_name',
 	'usp',
 	'trk',
 	'si',	// from Spotify
@@ -42,14 +43,16 @@ const trackingParams = [
 const domainParams = {
 	'instagram.com': ['igshid'],
 	'twitter.com': ['s', 't'],
-	'tiktok.com': ['_d', '_r', '_t', 'checksum', 'sec_uid', 'sec_user_id', 'tt_from', 'u_code', 'user_id'],
+	'tiktok.com': ['_d', '_r', '_s', '_t', 'checksum', 'sec_uid', 'sec_user_id', 'tt_from', 'u_code', 'user_id'],
 }
 
 const handleRegexByHostname = {
 	'github.com': /^[a-z0-9-]{2,}$/i,
-	'twitter.com': /^@?(\w){1,15}$/,
 	'instagram.com': /^([\w\.]){2,30}$/,
 	'pinterest.com': /^[a-z0-9_]{1,15}$/i,
+	'tiktok.com': /^@?[a-z0-9_\.]{2,30}$/i,
+	'twitter.com': /^@?(\w){1,15}$/,
+	'youtube.com': /^@?([\w\.-]){3,30}$/,
 }
 
 const ensureURL = (url) => {
@@ -134,11 +137,13 @@ const urlInfo = (url) => {
 	if (paths.length) {
 
 		// handle as first url path
-		if (['twitter.com', 'pinterest.com', 'github.com', 'instagram.com'].includes(parsedDomain.domain)) {
-			if (handleRegexByHostname[parsedDomain.domain].test(paths[0])) {
-				handle = paths[0]
+		if (Object.keys(handleRegexByHostname).includes(parsedDomain.domain)) {
+			const pathHandle = paths[0].startsWith('@') ? paths[0].slice(1) : paths[0]
+
+			if (handleRegexByHostname[parsedDomain.domain].test(pathHandle)) {
+				handle = pathHandle
 			}
-		} else if (parsedDomain.domain === 'linkedin.com' && paths.length > 1 && paths[0] === 'in' && !paths[1].includes('-')) {
+		} else if (parsedDomain.domain === 'linkedin.com' && paths.length > 1 && paths[0] === 'in') {
 			handle = paths[1]
 		} else if (parsedDomain.domain === 'facebook.com') {
 			if (paths[0] === 'profile.php') {
