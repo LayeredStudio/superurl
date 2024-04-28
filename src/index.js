@@ -71,7 +71,7 @@ const ensureURL = (url) => {
 	return url
 }
 
-const sanitizeUrl = (url, options) => {
+export function sanitizeUrl(url, options) {
 	const opts = {
 		allowedProtocols: ['http:', 'https:'],
 		...options,
@@ -117,7 +117,7 @@ const sanitizeUrl = (url, options) => {
 	return toURL.toString()
 }
 
-const urlInfo = (url) => {
+export function urlInfo(url) {
 	const originalUrl = url
 	const sanitized = sanitizeUrl(url)
 	url = new URL(sanitized)
@@ -172,7 +172,22 @@ const urlInfo = (url) => {
 	}
 }
 
-export {
-	sanitizeUrl,
-	urlInfo,
+export function urlIsYoutube(url) {
+	const u = ensureURL(url)
+	const youtubeIdRegex = /^([a-zA-Z0-9_-]{11})$/
+
+	if (u.hostname === 'www.youtube.com') {
+		const paths = u.pathname.split('/')
+		const videoId = u.searchParams.get('v')
+
+		if (u.pathname === '/watch' && videoId && youtubeIdRegex.test(videoId)) {
+			return videoId
+		}
+	} else if (u.hostname === 'youtu.be') {
+		console.log('YT 2', u.pathname)
+	}
+
+	// ^((?:https?:)?//)?((?:www|m).)?((?:youtube.com|youtu.be))(/(?:[\w-]+?v=|embed/|v/|shorts/)?)([\w-]+)(\S+)?$
+
+	return false
 }
