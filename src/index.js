@@ -1,4 +1,4 @@
-import { getDomain, parse as parseDomain } from 'tldts'
+import { parse as parseDomain } from 'tldts'
 
 const hostnameRewrites = {
 	'instagram.com': 'www.instagram.com',
@@ -57,15 +57,15 @@ const handleRegexByHostname = {
 
 const ensureURL = (url) => {
 	if (typeof url === 'string') {
-		try {
+		if (URL.canParse(url)) {
 			url = new URL(url)
-		} catch (error) {
-			if (getDomain(url)) {
-				url = new URL(`http://${url}`)
-			} else {
-				throw new Error('Invalid URL')
-			}
+		} else if (URL.canParse(`http://${url}`)) {
+			url = new URL(`http://${url}`)
 		}
+	}
+
+	if (!(url instanceof URL)) {
+		throw new Error('Invalid URL')
 	}
 
 	return url
