@@ -1,32 +1,39 @@
 {
   "name": "@layered/superurl",
-  "version": "1.1.11",
-  "description": "Validate, sanitize & extract info from URLs",
-  "license": "ISC",
-  "author": "Andrei",
-  "homepage": "https://github.com/LayeredStudio/superurl#readme",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/LayeredStudio/superurl.git"
-  },
+  "version": "1.2.0",
+  "description": "URL helpers: validate, sanitize & extract info",
   "type": "module",
-  "exports": "./src/index.js",
-  "scripts": {
-    "test": "mocha"
-  },
-  "files": [
-    "src"
-  ],
   "keywords": [
     "url",
     "validation",
     "extract",
-    "sanitize"
+    "sanitize",
+    "verify"
   ],
-  "devDependencies": {
-    "mocha": "^10.2.0"
+  "author": "Andrei",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LayeredStudio/superurl.git"
+  },
+  "homepage": "https://github.com/LayeredStudio/superurl#readme",
+  "exports": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc",
+    "dev": "node --enable-source-maps --import tsx/esm --watch src/index.ts",
+    "test": "node --test --import tsx/esm test/**/*.ts"
   },
   "dependencies": {
     "tldts": "^6.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.4",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4"
   }
 }
