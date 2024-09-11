@@ -19,4 +19,5 @@ test('getYoutubeVideoId() - get video ID', function () {
 	assert.equal(getYouTubeVideoId('https://www.youtube.com/v/nTeia0mgz5Y?cbrd=1'), 'nTeia0mgz5Y');
 	assert.equal(getYouTubeVideoId('https://www.youtube.com/embed/nTeia0mgz5Y'), 'nTeia0mgz5Y');
 	assert.equal(getYouTubeVideoId('https://www.youtube-nocookie.com/embed/nTeia0mgz5Y'), 'nTeia0mgz5Y');
+	assert.equal(getYouTubeVideoId('https://www.youtube.com/live/nTeia0mgz5Y'), 'nTeia0mgz5Y');
 })

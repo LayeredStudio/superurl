@@ -12,33 +12,57 @@ const secureDomains: string[] = ['example.com', 'google.com', 'twitter.com', 'fa
 //todo use HSTS https://www.chromium.org/hsts/
 //https://raw.githubusercontent.com/chromium/chromium/main/net/http/transport_security_state_static.json
 
-const languageParams: string[] = ['locale', 'language', 'lang', 'Lang', 'hl']
+const languageParams: string[] = ['locale', 'language', 'lang', 'Lang', 'hl', 'locale.x', 'ui_locales']
 const trackingParams: string[] = [
 	'_ga',
+	'__nsrc__',
+	'__snid3__',
+	'adgroupid',
+	'EXP',
+	'gclid',
+	'gad_source',
+	'gbraid',
 	'fbclid',	// from Meta
+	'fp_sid',
 	'ref',
 	'ref_src',
 	'ref_url',
+	'ref_campaign',
+	'ref_source',
+	'ref_page',
+	'ref_loc',
+	'ref_cta',
 	'referer',
+	'referring_guid',
 	'ref_',
 	'fref',
 	'pnref',
+	'pq-origsite',
+	'sourcetype',
+	'link_ref',
+	'origin',
 	'originalSubdomain',	// from LinkedIn
 	'original_referer',
 	'share_app_id',
 	'share_author_id',
 	'share_link_id',
 	'share_id',	// from Snapchat
+	'share_from',
 	'sid',	// from Snapchat
 	'utm_campaign',
 	'utm_content',
 	'utm_medium',
 	'utm_source',
 	'utm_name',
+	'utm_term',
+	'utm_id',
+	'utm_unptid',
+	'source',
 	'usp',
 	'trk',
 	'si',	// from Spotify/YouTube
 	'nd',	// from Spotify
+	'via',
 ]
 const domainParams: {[key: string]: string[]} = {
 	'instagram.com': ['igshid', 'igsh'],
@@ -100,6 +124,8 @@ function ensureURL(url: string | URL): URL {
 export type SanitizeUrlOptions = {
 	/** Which URL protocols are allowed. */
 	allowedProtocols?: string[]
+	/** Remove the hash from the URL. */
+	removeHash?: boolean
 }
 
 /**
@@ -116,6 +142,7 @@ export type SanitizeUrlOptions = {
 export function sanitizeUrl(url: string | URL, options?: SanitizeUrlOptions): URL {
 	const opts = {
 		allowedProtocols: ['http:', 'https:'],
+		removeHash: true,
 		...options,
 	}
 	const toURL = ensureURL(url)
@@ -129,6 +156,10 @@ export function sanitizeUrl(url: string | URL, options?: SanitizeUrlOptions): UR
 
 	if (!parsedDomain.domain || !parsedDomain.isIcann) {
 		throw new Error(`Not a valid internet domain "${toURL.hostname}"`)
+	}
+
+	if (opts.removeHash) {
+		toURL.hash = ''
 	}
 
 	// update hostname typos

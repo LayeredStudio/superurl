@@ -1,6 +1,6 @@
-# 🔗 superurl
+# 🔗 @layered/superurl
 
-**superurl** is a JavaScript library that can clean and extract info from URLs
+**@layered/superurl** is a JavaScript library that can clean and extract info from URLs.
 
 ### Highlights
 * Removes tracking parameters
