@@ -37,6 +37,7 @@ test('sanitizeUrl() - remove analytics/campaigns/tracking params', function () {
 	assert.equal(sanitizeUrl('https://www.snapchat.com/add/nyc?share_id=QzVCQkJDNUUtQzgzNS00NjRCLTlEQzQtNTRDRTNDMTE2QzFD&locale=en_US&sid=7eb444d1a6b94949b5a2215b1ef0d459&utm_medium=social&utm_source=hoobe').toString(), 'https://www.snapchat.com/add/nyc');
 	assert.equal(sanitizeUrl('https://open.spotify.com/user/31nc3nalswo2n4zo2x4hcra4w2oe?si=sOPwLS9ITfG135t-NJYuxg&nd=1').toString(), 'https://open.spotify.com/user/31nc3nalswo2n4zo2x4hcra4w2oe');
 	assert.equal(sanitizeUrl('https://youtu.be/nTeia0mgz5Y?si=Og7QukHZYo0LBTmm').toString(), 'https://youtu.be/nTeia0mgz5Y');
+	assert.equal(sanitizeUrl('https://www.proquest.com/?cbl=60394&pq-origsite=gscholar').toString(), 'https://www.proquest.com/?cbl=60394');
 });
 
 test('sanitizeUrl() - remove language params', function () {
