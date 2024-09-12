@@ -78,6 +78,7 @@ const trackingParams: string[] = [
 	'usp',
 	'trk',
 	'via',
+	'xtor',
 ]
 const domainParams: {[key: string]: string[]} = {
 	'instagram.com': ['igshid', 'igsh'],
