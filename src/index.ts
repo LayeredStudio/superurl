@@ -23,6 +23,7 @@ const trackingParams: string[] = [
 	'__snid3__',
 	'adgroupid',
 	'ceid',
+	'cmdf',
 	'EXP',
 	'fbclid',	// from Meta
 	'fp_sid',
@@ -44,19 +45,26 @@ const trackingParams: string[] = [
 	'referring_guid',
 	'ref_',
 	'fref',
-	'pnref',
-	'pq-origsite',
-	'sourcetype',
 	'link_ref',
+	'nd',	// from Spotify
 	'origin',
 	'originalSubdomain',	// from LinkedIn
 	'original_referer',
+	'pnref',
+	'pq-origsite',
+	'ppid',
+	'pp',
+	'pli',
 	'share_app_id',
 	'share_author_id',
 	'share_link_id',
 	'share_id',	// from Snapchat
 	'share_from',
+	'si',	// from Spotify/YouTube
 	'sid',	// from Snapchat
+	'source',
+	'sourcetype',
+	'src',
 	'utm_campaign',
 	'utm_content',
 	'utm_medium',
@@ -67,15 +75,8 @@ const trackingParams: string[] = [
 	'utm_unptid',
 	'unptid',
 	'ucbcb',
-	'ppid',
-	'pp',
-	'pli',
-	'source',
-	'src',
 	'usp',
 	'trk',
-	'si',	// from Spotify/YouTube
-	'nd',	// from Spotify
 	'via',
 ]
 const domainParams: {[key: string]: string[]} = {
