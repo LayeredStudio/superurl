@@ -208,12 +208,22 @@ export function sanitizeUrl(url: string | URL, options?: SanitizeUrlOptions): UR
 	return toURL
 }
 
+interface UrlInfo {
+	originalUrl: string
+	url: string
+	hostname: string
+	domain: string
+	subdomain: string | null
+	handle: string | null
+	providerId: string | null
+}
+
 /**
  * Extract information from a URL, such as the domain, handle, or provider ID (e.g. YouTube channel ID, Twitter handle, and more).
  * @param url - URL to extract info from
  * @returns 
  */
-export function urlInfo(url: string | URL) {
+export function urlInfo(url: string | URL): UrlInfo {
 	const originalUrl = url
 	url = sanitizeUrl(url)
 
@@ -281,13 +291,13 @@ export function urlInfo(url: string | URL) {
 	}
 
 	return {
-		originalUrl,
+		originalUrl: originalUrl.toString(),
 		url: url.toString(),
 		hostname: url.hostname,
 		domain: parsedDomain.domain,
 		subdomain: parsedDomain.subdomain,
-		handle,
-		providerId,
+		handle: handle || null,
+		providerId: providerId || null,
 	}
 }
 
