@@ -1,8 +1,7 @@
 name: Publish
 on:
-  push:
-    branches:
-      - main
+  release:
+    types: [published]
 
 jobs:
   publish:
@@ -20,9 +19,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Publish package to npmjs.com
-      - run: npm ci
-      - run: npm run build
-      - run: npm publish --provenance --access public
+        run: npm ci
+        run: npm run build
+        run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
