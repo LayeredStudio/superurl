@@ -1,6 +1,6 @@
 {
   "name": "@layered/superurl",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "description": "URL helpers: validate, sanitize & extract info",
   "type": "module",
   "keywords": [

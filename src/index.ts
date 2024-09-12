@@ -26,6 +26,7 @@ const trackingParams: string[] = [
 	'EXP',
 	'fbclid',	// from Meta
 	'fp_sid',
+	'feature',
 	'gclid',
 	'gl',
 	'gad_source',
@@ -67,6 +68,7 @@ const trackingParams: string[] = [
 	'unptid',
 	'ucbcb',
 	'ppid',
+	'pp',
 	'pli',
 	'source',
 	'src',
