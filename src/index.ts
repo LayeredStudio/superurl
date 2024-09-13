@@ -19,6 +19,7 @@ const trackingParams: string[] = [
 	'.partner',
 	'.src',
 	'_ga',
+	'_gl',
 	'__nsrc__',
 	'__snid3__',
 	'adgroupid',
