@@ -20,12 +20,8 @@ jobs:
 
       - name: Publish package to npmjs.com
         run: npm ci
-
       - run: npm run build
-
-      - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: npm publish
 
   publish_jsr:
     runs-on: ubuntu-latest
